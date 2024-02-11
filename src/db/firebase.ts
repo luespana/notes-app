@@ -4,6 +4,14 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  getFirestore,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDTYnm1G32soOrSva8XojA0gZKbuv6J8Vw",
@@ -17,6 +25,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
+const db = getFirestore(app);
 
 export const login = async (email: string, password: string) => {
   try {
@@ -35,4 +44,20 @@ export const authState = (callback: (arg0: any) => void) => {
       callback(null);
     }
   });
+};
+
+export const addData = async (col: string, data: any) => {
+  const docRef = await addDoc(collection(db, col), data);
+  return docRef.id;
+};
+
+export const getAll = async (col: string) => {
+  const ref = collection(db, col);
+  const snapshot = await getDocs(ref);
+  const list = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  return list;
+};
+
+export const deleteById = async (col: string, id: string) => {
+  await deleteDoc(doc(db, col, id));
 };
