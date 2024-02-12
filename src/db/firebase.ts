@@ -9,6 +9,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
 } from "firebase/firestore";
@@ -56,6 +57,12 @@ export const getAll = async (col: string) => {
   const snapshot = await getDocs(ref);
   const list = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
   return list;
+};
+
+export const getById = async (col: string, id: string) => {
+  const docRef = doc(db, col, id);
+  const data = await getDoc(docRef);
+  return data.data();
 };
 
 export const deleteById = async (col: string, id: string) => {
