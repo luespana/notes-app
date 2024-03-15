@@ -66,8 +66,8 @@ export const updateByColAndId = async (col: string, id: string, data: any) => {
   try {
     const docRef = doc(db, col, id);
     await updateDoc(docRef, data);
-  } catch (error) {
-    throw new Error("Error");
+  } catch (error: any) {
+    throw new Error(error);
   }
 };
 
