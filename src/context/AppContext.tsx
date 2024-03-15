@@ -13,6 +13,7 @@ interface ContextInterface {
   getCorchos: () => Promise<void>;
   currentCorcho: any | null;
   setCurrentCorcho: React.Dispatch<React.SetStateAction<any | null>>;
+  setCorchos: React.Dispatch<React.SetStateAction<any | null>>;
 }
 
 const AppContext = createContext<ContextInterface>({} as ContextInterface);
@@ -25,17 +26,28 @@ const AppProvider = ({ children }: contextProps) => {
     authState((user) => {
       setUser(user);
     });
-    getCorchos();
   }, []);
 
-  const [corchos, setCorchos] = useState([]);
+  useEffect(() => {
+    if (user) {
+      getCorchos();
+    }
+  }, [user]);
+
+  const [corchos, setCorchos] = useState<any[]>([]);
   const getCorchos = async () => {
     try {
       toast.loading("Cargando...");
       const data = await getAll("corchos");
-      setCorchos(data as any);
+      console.log(user);
+      const userCorchos = data.filter((corcho: any) => {
+        return corcho.userId === user.uid;
+      });
+      console.log(userCorchos);
+      setCorchos(userCorchos as any);
       toast.dismiss();
     } catch (error) {
+      console.log(error);
       toast.dismiss();
       toast.error("Error al cargar");
     }
@@ -50,6 +62,7 @@ const AppProvider = ({ children }: contextProps) => {
         getCorchos,
         currentCorcho,
         setCurrentCorcho,
+        setCorchos,
       }}
     >
       {children}

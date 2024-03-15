@@ -3,6 +3,7 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import {
   addDoc,
@@ -12,6 +13,7 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  updateDoc,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -33,7 +35,15 @@ export const login = async (email: string, password: string) => {
     const res = await signInWithEmailAndPassword(auth, email, password);
     console.log(res.user);
   } catch (error) {
-    alert("error");
+    throw new Error("Error");
+  }
+};
+
+export const logOut = async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    throw new Error("Error");
   }
 };
 
@@ -50,6 +60,15 @@ export const authState = (callback: (arg0: any) => void) => {
 export const addData = async (col: string, data: any) => {
   const docRef = await addDoc(collection(db, col), data);
   return docRef.id;
+};
+
+export const updateByColAndId = async (col: string, id: string, data: any) => {
+  try {
+    const docRef = doc(db, col, id);
+    await updateDoc(docRef, data);
+  } catch (error) {
+    throw new Error("Error");
+  }
 };
 
 export const getAll = async (col: string) => {

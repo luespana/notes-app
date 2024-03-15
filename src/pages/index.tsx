@@ -3,16 +3,10 @@ import Login from "@/components/Login";
 import { useApp } from "@/context/AppContext";
 
 export default function Home() {
-  const { user } = useApp()
+  const { user } = useApp();
   if (user == null) {
-    return (
-      <Login />
-    );
+    return <Login />;
   } else {
-    return (
-      <Dashboard />
-    );
+    return <Dashboard />;
   }
-
-
 }

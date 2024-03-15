@@ -33,7 +33,7 @@ export default function Corcho() {
         {currentCorcho.name}
       </p>
       <div className="w-[80vw] h-[80vh] bg-zinc-500 rounded-md p-6">
-        <div className="w-full h-full bg-amber-700 rounded-md"></div>
+        <div className="w-full h-full bg-amber-500 rounded-md"></div>
       </div>
     </div>
   );
